@@ -3,7 +3,6 @@ package graph;
 import java.util.LinkedList;
 import java.util.List;
 
-// TODO: implement
 public class EdgeArrayGraphImpl<T> implements Graph<T> {
     private int n;
     private int alpha;
@@ -69,7 +68,11 @@ public class EdgeArrayGraphImpl<T> implements Graph<T> {
 
     @Override
     public void removeEdge(T v, T w) {
-        lst.remove(new Edge(v,w));
+        for (int i = 0; i < lst.size(); i++) {
+            if (lst.get(i).getFirst() == v || lst.get(i).getSecond() == w){
+                lst.remove(i);
+            }
+        }
         alpha--;
     }
 
