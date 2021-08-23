@@ -22,7 +22,7 @@ public class Vertex<T> {
 
     public void removeEdge(T w) {
         for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getData() == w){
+            if (lst.get(i).getData().equals(w)){
                 lst.remove(i);
             }
         }
@@ -30,7 +30,7 @@ public class Vertex<T> {
 
     public boolean hasEdge(T w){
         for (int i = 0; i < lst.size(); i++) {
-            if (lst.get(i).getData() == w){
+            if (lst.get(i).getData().equals(w)){
                 return true;
             }
         }

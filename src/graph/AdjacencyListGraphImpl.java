@@ -2,6 +2,7 @@ package graph;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 // TODO: implement
@@ -31,7 +32,6 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
             }
             V = aux;
         }
-
         V[n] = new Vertex(x);
         n++;
     }
@@ -39,8 +39,9 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
     @Override
     public boolean hasVertex(T v){
         for (int i = 0; i < n; i++) {
-            if (V[i].getData() == v)
+            if (V[i].getData().equals(v)) {
                 return true;
+            }
         }
         return false;
     }
@@ -48,7 +49,8 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
     @Override
     public void removeVertex(T x) {
         for (int i = 0; i < n; i++) {
-            if (V[i].getData() == x){
+            if (V[i].getData().equals(x)){
+
                 for (int j = i+1; j < n; j++) {
                     V[j-1] = V[j];
                 }
@@ -60,10 +62,10 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
     @Override
     public void addEdge(T v, T w) {
         for (int i = 0; i < n; i++) {
-            if (V[i].getData() == v)
+            if (V[i].getData().equals(v))
                 V[i].addEdge(w);
 
-            if (V[i].getData() == w)
+            if (V[i].getData().equals(w))
                 V[i].addEdge(v);
         }
         alpha++;
@@ -72,10 +74,10 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
     @Override
     public void removeEdge(T v, T w) {
         for (int i = 0; i < n; i++) {
-            if (V[i].getData() == v)
+            if (V[i].getData().equals(v))
                 V[i].removeEdge(w);
 
-            if (V[i].getData() == w)
+            if (V[i].getData().equals(w))
                 V[i].removeEdge(v);
         }
         alpha--;
@@ -84,8 +86,12 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
     @Override
     public boolean hasEdge(T v, T w) {
         for (int i = 0; i < n; i++) {
-            if (V[i].getData() == v){
+            if (V[i].getData().equals(v)){
                 if (V[i].hasEdge(w)){
+                    return true;
+                }
+            } else if (V[i].getData().equals(w)) {
+                if (V[i].hasEdge(v)){
                     return true;
                 }
             }
@@ -105,12 +111,16 @@ public class AdjacencyListGraphImpl<T> implements Graph<T> {
 
     @Override
     public List<T> getVertexes() {
-        return (List<T>) Arrays.asList(V);
+        List<T> lst = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            lst.add((T) V[i].getData());
+        }
+        return lst;
     }
 
     @Override
     public List<T> getAdjacencyList(T v) {
-        List<T> adjList = new ArrayList<>();
+        LinkedList<T> adjList = new LinkedList<T>();
         for (int i = 0; i < n; i++) {
             if (V[i].getData() == v){
                 for (int j = 0; j < V[i].getLst().size(); j++) {
