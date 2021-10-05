@@ -128,7 +128,8 @@ public class EdgeArrayGraphImpl<T> implements Graph<T> {
                     T second = (T) A.get(j).getSecond();
                     if (first.equals(v)) {
                         adjList.add(second);
-                    } else if (second.equals(v)) {
+                    }
+                    if (second.equals(v)) {
                         adjList.add(first);
                     }
                 }

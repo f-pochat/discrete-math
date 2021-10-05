@@ -1,9 +1,9 @@
 package tp2;
 
 import graph.Graph;
+import graph.Vertex;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Tp2Impl<T> implements Tp2<T> {
     @Override
@@ -13,12 +13,39 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public List<T> breadth_first_search(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        return breadth_first_search(graph,graph.getVertexes().get(0));
+    }
+
+    private List<T> breadth_first_search(Graph<T> graph, T first) {
+        if (graph.alpha() == 0){
+            return null;
+        }
+        List<T> visited = new ArrayList<>();
+        LinkedList<T> queue = new LinkedList<>();
+        List<T> result = new ArrayList<>();
+        visited.add(first);
+        queue.add(first);
+        while(queue.size() != 0) {
+            first = queue.poll();
+            result.add(first);
+
+            for (T n : graph.getAdjacencyList(first)) {
+                if (!visited.contains(n)) {
+                    visited.add(n);
+                    queue.add(n);
+                }
+            }
+        }
+        return result;
     }
 
     @Override
     public boolean exercise_a(Graph<T> graph, T v, T w) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> bfs = breadth_first_search(graph,v);
+        if (bfs == null){
+            return false;
+        }
+        return bfs.contains(w);
     }
 
     @Override
@@ -53,7 +80,27 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public int exercise_h(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        int counter = 0;
+        List<T> visited = new ArrayList<>();
+        for (int i = 0; i < graph.order(); i++) {
+            if (!visited.contains(graph.getVertexes().get(i))) {
+                visited.add(graph.getVertexes().get(i));
+                List<T> bfs = breadth_first_search(graph,graph.getVertexes().get(i));
+
+                if (bfs == null) {
+                    counter++;
+                    continue;
+                }
+
+                Iterator<T> aux = bfs.iterator();
+                while (aux.hasNext()){
+                    T vertex = aux.next();
+                    if (!visited.contains(vertex)) visited.add(vertex);
+                }
+                counter++;
+            }
+        }
+        return counter;
     }
 
     @Override
@@ -78,7 +125,7 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public int exercise_m(Graph<T> graph, T v) {
-        throw new UnsupportedOperationException("TODO");
+        return graph.getAdjacencyList(v).size();
     }
 
     @Override

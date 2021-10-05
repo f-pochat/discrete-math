@@ -15,9 +15,8 @@ public class GraphFactoryImpl<T> implements GraphFactory<T> {
     //    Returns a random graph
     @Override
     public Graph<T> getGraph() {
-//        return new EdgeArrayGraphImpl<>();
+         return new EdgeArrayGraphImpl<>();
 //        return new AdjacencyMatrixGraphImpl<>();
 //        return new AdjacencyListGraphImpl<>();
-        throw new UnsupportedOperationException("TODO: replace with one graph");
     }
 }
