@@ -8,7 +8,30 @@ import java.util.*;
 public class Tp2Impl<T> implements Tp2<T> {
     @Override
     public List<T> depth_first_search(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        List<T> emptyList = new ArrayList<>();
+        if (graph.order() == 0) {
+            return null;
+        }
+        T first = graph.getVertexes().get(0);
+        return auxDFS(first, emptyList, graph);
+    }
+
+    private List<T> auxDFS(T v, List<T> visited, Graph<T> graph){
+        List<T> adjacencyList = graph.getAdjacencyList(v);
+        visited.add(v);
+        for (int i = 0; i < adjacencyList.size(); i++) {
+            T currentV = adjacencyList.get(i);
+            if (visited.contains(currentV) == false) {
+                List<T> list = auxDFS(currentV, visited, graph);
+                for (int j = 0; j < list.size(); j++) {
+                    T currentV2 = list.get(i);
+                    if (visited.contains(currentV2) == false) {
+                        visited.add(currentV2);
+                    }
+                }
+            }
+        }
+        return visited;
     }
 
     @Override
@@ -53,9 +76,35 @@ public class Tp2Impl<T> implements Tp2<T> {
         throw new UnsupportedOperationException("TODO");
     }
 
-    @Override
+    @Override // Verificar si un grafo tiene ciclos.
     public boolean exercise_c(Graph<T> graph) {
-        throw new UnsupportedOperationException("TODO");
+        boolean hasCicle = false;
+        List<T> V = graph.getVertexes();
+        for (int i = 0; i < V.size(); i++) {
+            T v = V.get(i);
+            List<T> visited = new ArrayList<>();
+            if (existsAWay(graph, v, v, visited, v)) {
+                hasCicle = true;
+            }
+        }
+        return hasCicle;
+    }
+
+    private boolean existsAWay(Graph<T> graph, T v, T w, List<T> visited, T last){
+        List<T> adjacencyList = graph.getAdjacencyList(v);
+        visited.add(v);
+        adjacencyList.remove(last);
+        if (adjacencyList.contains(w)) {
+            return true;
+        }else{
+            for (int i = 0; i < adjacencyList.size(); i++) {
+                T currentV = adjacencyList.get(i);
+                if (visited.contains(currentV) == false) {
+                    return existsAWay(graph, currentV, w, visited, v);
+                }
+            }
+        }
+        return false;
     }
 
     @Override
@@ -110,7 +159,17 @@ public class Tp2Impl<T> implements Tp2<T> {
 
     @Override
     public boolean exercise_j(Graph<T> g1, Graph<T> g2) {
-        throw new UnsupportedOperationException("TODO");
+        if (g1.order() == g2.order() && g1.alpha() <= g2.alpha()) {
+            for (int i = 0; i < g1.getVertexes().size(); i++) {
+                T v1 = g1.getVertexes().get(i);
+                T v2 = g2.getVertexes().get(i);
+                if (v1 != v2) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
